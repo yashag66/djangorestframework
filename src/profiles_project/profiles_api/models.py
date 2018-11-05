@@ -26,6 +26,12 @@ class UserProfileManager(BaseUserManager):
     def create_superuser(self, email, name, password):
         """Creates and saves a new superuser with given details."""
 
+        if not email:
+            raise ValueErro("Users must have an email address")
+
+        if not name:
+            raise ValueErro("Users must have a name")
+
         user = self.create_user(email, name, password)
 
         user.is_superuser = True
@@ -48,7 +54,7 @@ class userProfile(AbstractBaseUser, PermissionsMixin):
     objects = UserProfileManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELD = ['name']
+    REQUIRED_FIELDS = ['name']
 
     def get_full_name(self):
         """Used to get a users full name."""
